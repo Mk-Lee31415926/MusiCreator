@@ -1,0 +1,183 @@
+<html>
+<head>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	
+  	<!-- Css設定 -->
+ 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ 	<link rel="stylesheet" href="../Cssrender/FormRendering.css">
+ 	
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/tone@13.8.25/build/Tone.js"></script>
+  	<script src="../scripts/imageMapResizer.min.js"></script>
+  	<script src="../scripts/jquery.maphilight.js"></script>
+  	
+  	<!-- WebAudioFont是從外部拉進來的鋼琴聲音 -->
+  	<script src="https://surikov.github.io/webaudiofont/npm/dist/WebAudioFontPlayer.js"></script>
+	<script src="https://surikov.github.io/webaudiofontdata/sound/0010_Chaos_sf2_file.js"></script>
+	
+  	<script src="../scripts/playSong.js"></script>
+	<script src="../scripts/getSongsTable.js"></script>
+	<script src="../scripts/postSong.js"></script>
+	<script src="../scripts/HookWebAudioFont.js"></script>
+	
+  	<style>
+  		
+  	</style>
+  	<script>
+  		$(document).ready(function(){
+  			//使用github資源工具
+  			//imagemap比較難操縱，除了css效果不知道該怎麼加，在RWD上也需要在另外處理
+  			$("#area-map").imageMapResize();
+  			$("#piano-img").maphilight();	//處理琴鍵hover上的效果(<area>沒有css屬性可改)
+  			//maphilight如何修改default樣式設定?
+  			//https://projects.davidlynch.org/maphilight/docs/
+  			
+  			//const synth = new Tone.Synth().toMaster();
+  			
+  			//開/關modal form按鈕
+  			$("#open_sesame").click(function(){
+  				$("#modal_action").toggle();
+  			})
+  			
+  			//載入音源資源的部分
+  			 $("#area-map").on({
+  				mousedown: function(evt){
+  					//synth.triggerAttack(evt.target.dataset.note);
+  					//$("#noteTest").text(evt.target.dataset.note); //show note name as text
+  					
+  					//載入聲音了，但我想再加上思考怎麼處理載入延遲的問題，或者說做UIloading呈現
+  					//經驗:WebAudioContext must be generated after a user gesture is triggered.
+  					//意思是我把setting的變數移到螢幕偵測到event之後再做
+  					//Ha!
+  					//要去研究到底是哪個部分造成載入時大概過5秒按的動作才有聲音
+  					
+  					//排除bug : 按下一個按鍵再點另外一個，會停在原本按的上面
+  					
+  					//note: 把recordHistory綁到input上 then POST
+  					//在修一個<div>版本，去研究event bubbling，我覺得div可以做比較多變化，調整起來也比較方便(生成完整鋼琴)
+  					//前端要避免送空資料
+  					
+  					var AudioContextFunc = window.AudioContext || window.webkitAudioContext;
+					var audioContext = new AudioContextFunc();
+					var player = new WebAudioFontPlayer();
+					player.loader.decodeAfterLoading(audioContext, '_tone_0010_Chaos_sf2_file.js'); //Bright Acoustic Piano: 12
+  					var pitch = translateNote(evt.target.dataset.note);
+  					console.log("translate : " + pitch , typeof pitch);
+  					player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_Chaos_sf2_file, 0, pitch, 2);
+  					
+  					$("#noteDisplay").append(evt.target.dataset.note + " ")
+  				},
+  				mouseup: function(evt){
+  					console.log(evt.target.dataset.note);
+  				}
+  			});
+  		});
+  		
+  	</script>
+</head>
+<body>
+	<div class="row">
+		<div class="col-sm-12">
+			<img id="piano-img" class="img-fluid" src="../img/blank_piano_keyboard_layout.png" usemap="#image-map">
+			<map id="area-map" name="image-map">
+			    <area alt="C3" data-note="C3" coords="14,14,13,193,51,193,50,127,38,128,38,12" shape="poly">
+			    <area alt="#C3" data-note="#C3" coords="37,13,64,128" shape="rect">
+			    <area alt="D3" data-note="D3" coords="52,129,50,192,87,192,89,128,75,128,74,14,63,14,64,128" shape="poly">
+			    <area alt="#D3" data-note="#D3" coords="75,13,102,128" shape="rect">
+			    <area alt="E3" data-note="E3" coords="89,130,88,194,126,193,127,14,103,15,103,129" shape="poly">
+			    <area alt="F3" data-note="F3" coords="125,14,125,193,163,193,163,127,150,128,149,14" shape="poly">
+			    <area alt="#F3" data-note="#F3" coords="149,14,176,128" shape="rect">
+			    <area alt="G3" data-note="G3" coords="163,127,164,193,201,194,200,128,187,127,189,13,176,14,177,128" shape="poly">
+			    <area alt="#G3" data-note="#G3" coords="188,16,214,128" shape="rect">
+			    <area alt="A3" data-note="A3" coords="201,126,201,194,239,193,238,127,225,127,224,12,214,13,214,129" shape="poly">
+			    <area alt="#A3" data-note="#A3" coords="225,14,251,128" shape="rect">
+			    <area alt="B3" data-note="B3" coords="237,129,239,193,274,194,275,13,251,13,252,127" shape="poly">
+			    <area alt="C4" data-note="C4" coords="275,15,275,192,313,193,313,127,301,128,300,14" shape="poly">
+			    <area alt="#C4" data-note="#C4" coords="300,14,325,128" shape="rect">
+			    <area alt="D4" data-note="D4" coords="311,129,313,195,349,195,349,129,337,129,337,14,326,14,326,128" shape="poly">
+			    <area alt="#D4" data-note="#D4" coords="338,15,363,126" shape="rect">
+			    <area alt="E4" data-note="E4" coords="350,128,349,192,387,194,389,15,363,13,364,129" shape="poly">
+			    <area alt="F4" data-note="F4" coords="388,13,387,192,425,194,425,128,411,128,413,14" shape="poly">
+			    <area alt="#F4" data-note="#F4" coords="413,14,439,127" shape="rect">
+			    <area alt="G4" data-note="G4" coords="425,127,426,193,464,195,462,128,452,127,450,15,440,15,439,128" shape="poly">
+			    <area alt="#G4" data-note="#G4" coords="450,14,475,128" shape="rect">
+			    <area alt="A4" data-note="A4" coords="464,128,464,192,502,193,500,128,488,126,487,15,475,13,476,126" shape="poly">
+			    <area alt="#A4" data-note="#A4" coords="489,15,513,129" shape="rect">
+			    <area alt="B4" data-note="B4" coords="500,128,502,193,539,193,538,14,513,13,514,128" shape="poly">
+			    <area alt="C5" data-note="C5" coords="538,15,537,193,576,195,576,127,563,130,562,13" shape="poly">
+			    <area alt="#C5" data-note="#C5" coords="563,12,589,127" shape="rect">
+			    <area alt="D5" data-note="D5" coords="576,128,576,192,613,194,612,129,601,127,599,13,589,12,590,126" shape="poly">
+			    <area alt="#D5" data-note="#D5" coords="600,14,627,127" shape="rect">
+			    <area alt="E5" data-note="E5" coords="612,129,615,194,651,196,651,14,626,14,628,129" shape="poly">
+			    <area alt="F5" data-note="F5" coords="651,13,652,195,688,194,688,128,675,126,675,15" shape="poly">
+			    <area alt="#F5" data-note="#F5" coords="675,14,701,128" shape="rect">
+			    <area alt="G5" data-note="G5" coords="690,131,689,192,726,194,725,129,713,128,712,16,700,13,702,128" shape="poly">
+			    <area alt="#G5" data-note="#G5" coords="713,14,738,129" shape="rect">
+			    <area alt="A5" data-note="A5" coords="725,130,727,192,763,193,763,129,750,128,750,13,740,14,738,127" shape="poly">
+			    <area alt="#A5" data-note="#A5" coords="751,15,775,128" shape="rect">
+			    <area alt="B5" data-note="B5" coords="763,128,763,195,800,194,801,16,778,13,777,126" shape="poly">
+			</map>
+		</div>
+		<div class="col-sm-4">record history:
+			<span id = "noteDisplay"></span>
+		</div>
+	</div>
+	
+	<!-- 表單內容 -->
+		<div class="container">
+			<form action="#" class="form-popup was-validated">
+				<div class="container" style="background-color:#f1f1f1"> <!-- 使用者頭像(或者是專輯封面) -->
+					<img class="avatar" src="../img/ProfileImg.png" alt="User Profile">
+				</div>
+				
+				<div class="container"> <!-- Post旋律表單 -->
+				    <label for="title">歌名</label>
+					<input type="text" id="title" class="form-control" placeholder="輸入歌名" required/>
+					<div class="invalid-feedback">Please fill out this field.</div>
+					<label for="author">歌手</label>
+					<input type="text" id="author" placeholder="輸入歌手"/>
+					<label for="melody">旋律</label>
+					<input type="text" id="melody" placeholder="彈奏旋律"/>
+			 	</div>
+			  	<div class="container" style="background-color:#f1f1f1"> 
+				    <input class="button" type="image" id="submit"  src="../img/submit-right-arrow.png" alt="Submit to Keep"/>
+			  	</div>
+			</form>
+		</div>
+	
+	<div class="row">
+		<div class="container">
+			<h2>播放列表</h2>
+			<table class="table table-striped">
+			<thead class="thead-light">	
+				<tr>	
+					<th class="col-3">SongId</th>
+					<th class="col-3">曲名</th>
+					<th class="col-3">歌手</th>
+					<th class="col-3">旋律</th>
+					<th class="col-3">play</th>
+				</tr>
+			</thead>
+			<tbody id="showSongs">
+
+			</tbody>
+			</table>
+		</div>
+	</div>
+	
+	
+	<div>
+		<!-- 開啟modal form的按鈕 -->
+		<img class="button" id="open_sesame" src="../img/sign-add-icon.png" alt="Create Melody">
+	</div>
+	<!-- The Modal 可以留著之後做使用者登入-->
+	<div id="modal_action" class="modal">
+	  <span onclick="document.getElementById('modal_action').style.display='none'"
+	class="close" title="Close Modal">&times;</span>
+
+	</div>		
+</body>
+</html>

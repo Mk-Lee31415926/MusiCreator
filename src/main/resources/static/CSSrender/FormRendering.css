@@ -1,0 +1,77 @@
+@charset "utf-8";
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(255,255,255); /* Fallback color */
+  padding-top: 60px;
+}
+
+/*Form border*/
+form {
+	border: 3px solid #f1f1f1;
+}
+
+/*可放專輯圖片or當作作者的頭像*/
+.avatar {
+	width: 20%;
+	height: auto;
+	background: radial-gradient(circle,white, yellow);
+	border-radius: 50%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+/* Full-width inputs */
+input[type=text]{
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* 播放從mongo拉進來的資料旋律*/
+.playbtn	{ 
+	width:60%;
+	height:60%;
+}
+
+/*提供user操作的按鈕*/
+.button	{
+	position: relative;
+	left:50px;
+	width:5%;
+	height:auto;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+/* Add a hover effect for buttons */
+.button:hover {
+  opacity: 0.6;
+}
+
+/* Add padding to containers */
+.container {
+  padding: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+}
