@@ -18,65 +18,12 @@
   	<script src="https://surikov.github.io/webaudiofont/npm/dist/WebAudioFontPlayer.js"></script>
 	<script src="https://surikov.github.io/webaudiofontdata/sound/0010_Chaos_sf2_file.js"></script>
 	
+	<script src="../scripts/siteSetup.js"></script>
   	<script src="../scripts/playSong.js"></script>
 	<script src="../scripts/getSongsTable.js"></script>
 	<script src="../scripts/postSong.js"></script>
 	<script src="../scripts/HookWebAudioFont.js"></script>
 	
-  	<style>
-  		
-  	</style>
-  	<script>
-  		$(document).ready(function(){
-  			//使用github資源工具
-  			//imagemap比較難操縱，除了css效果不知道該怎麼加，在RWD上也需要在另外處理
-  			$("#area-map").imageMapResize();
-  			$("#piano-img").maphilight();	//處理琴鍵hover上的效果(<area>沒有css屬性可改)
-  			//maphilight如何修改default樣式設定?
-  			//https://projects.davidlynch.org/maphilight/docs/
-  			
-  			//const synth = new Tone.Synth().toMaster();
-  			
-  			//開/關modal form按鈕
-  			$("#open_sesame").click(function(){
-  				$("#modal_action").toggle();
-  			})
-  			
-  			//載入音源資源的部分
-  			 $("#area-map").on({
-  				mousedown: function(evt){
-  					//synth.triggerAttack(evt.target.dataset.note);
-  					//$("#noteTest").text(evt.target.dataset.note); //show note name as text
-  					
-  					//載入聲音了，但我想再加上思考怎麼處理載入延遲的問題，或者說做UIloading呈現
-  					//經驗:WebAudioContext must be generated after a user gesture is triggered.
-  					//意思是我把setting的變數移到螢幕偵測到event之後再做
-  					//Ha!
-  					//要去研究到底是哪個部分造成載入時大概過5秒按的動作才有聲音
-  					
-  					//排除bug : 按下一個按鍵再點另外一個，會停在原本按的上面
-  					
-  					//note: 把recordHistory綁到input上 then POST
-  					//在修一個<div>版本，去研究event bubbling，我覺得div可以做比較多變化，調整起來也比較方便(生成完整鋼琴)
-  					//前端要避免送空資料
-  					
-  					var AudioContextFunc = window.AudioContext || window.webkitAudioContext;
-					var audioContext = new AudioContextFunc();
-					var player = new WebAudioFontPlayer();
-					player.loader.decodeAfterLoading(audioContext, '_tone_0010_Chaos_sf2_file.js'); //Bright Acoustic Piano: 12
-  					var pitch = translateNote(evt.target.dataset.note);
-  					console.log("translate : " + pitch , typeof pitch);
-  					player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_Chaos_sf2_file, 0, pitch, 2);
-  					
-  					$("#noteDisplay").append(evt.target.dataset.note + " ")
-  				},
-  				mouseup: function(evt){
-  					console.log(evt.target.dataset.note);
-  				}
-  			});
-  		});
-  		
-  	</script>
 </head>
 <body>
 	<div class="row">
@@ -121,14 +68,15 @@
 			    <area alt="B5" data-note="B5" coords="763,128,763,195,800,194,801,16,778,13,777,126" shape="poly">
 			</map>
 		</div>
-		<div class="col-sm-4">record history:
+		<div class="col-sm-12">record history:
 			<span id = "noteDisplay"></span>
+			<button id="fillOutForm" class="btn btn-primary btn-sm">Fill the melody</button>
 		</div>
 	</div>
 	
 	<!-- 表單內容 -->
 		<div class="container">
-			<form action="#" class="form-popup was-validated">
+			<form id="musicForm" action="#" class="form-popup was-validated">
 				<div class="container" style="background-color:#f1f1f1"> <!-- 使用者頭像(或者是專輯封面) -->
 					<img class="avatar" src="../img/ProfileImg.png" alt="User Profile">
 				</div>
