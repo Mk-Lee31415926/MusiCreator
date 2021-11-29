@@ -50,13 +50,13 @@ public class MusicRestController {
 	}
 	
 	@PutMapping(value="/{id}")
-	public ResponseEntity<Melody> replaceMelody(@PathVariable("id") String id, @Validated @RequestBody Melody request){
+	public ResponseEntity<Melody> updateSong(@PathVariable("id") String id, @Validated @RequestBody Melody request){
 		Melody melody = songService.replaceMelody(id, request);
 		return ResponseEntity.ok(melody);
 	}
 	
 	@DeleteMapping(value="/{id}")
-	public ResponseEntity<Melody> deleteMelody(@PathVariable("id") String id){
+	public ResponseEntity<Melody> deleteSong(@PathVariable("id") String id){
 		songService.deleteMelody(id);
 		return ResponseEntity.noContent().build();
 	}
