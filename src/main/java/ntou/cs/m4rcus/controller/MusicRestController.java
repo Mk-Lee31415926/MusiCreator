@@ -52,9 +52,18 @@ public class MusicRestController {
 	@PutMapping(value="/{id}")
 	public ResponseEntity<Melody> updateSong(@PathVariable("id") String id, @Validated @RequestBody Melody request){
 		Melody melody = songService.replaceMelody(id, request);
+		System.out.println("--id:"+id);
+		System.out.println("--request:"+request);
+		System.out.println("--meldoy:"+melody);
 		return ResponseEntity.ok(melody);
 	}
 	
+	/* 測試用PUT
+	 * @PutMapping(value="/test/{id}")
+	public ResponseEntity<String> updateTest(@PathVariable("id") String id, @Validated @RequestBody Melody request){
+		//Melody melody = songService.replaceMelody(id, request);
+		return ResponseEntity.ok("{ \"title\":\"Hello\"}");
+	}*/
 	@DeleteMapping(value="/{id}")
 	public ResponseEntity<Melody> deleteSong(@PathVariable("id") String id){
 		songService.deleteMelody(id);

@@ -5,7 +5,7 @@
   	
   	<!-- Css設定 -->
  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- 	<link rel="stylesheet" href="../Cssrender/FormRendering.css">
+ 	<link rel="stylesheet" href="../CSSrender/FormRendering.css">
  	
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -26,8 +26,43 @@
 	
 </head>
 <body>
+	<div class="mt-4 p-5 bg-primary text-white rounded">
+	  <h1>MusiCreator.Jr</h1>
+	</div>
+	
 	<div class="row">
-		<div class="col-sm-12">
+	<!-- 表單內容 -->
+		<div class="container">
+			<form id="musicForm" action="#" class="form-popup was-validated">
+				<div class="container" style="background-color:#f1f1f1"> <!-- 使用者頭像(或者是專輯封面) -->
+					<img class="avatar" src="../img/ProfileImg.png" alt="User Profile">
+				</div>
+				
+				<div class="container"> <!-- Post旋律表單 -->
+					<div class="row">
+						<div class="col">
+					    <label for="title">歌名</label>
+						<input type="text" id="title" class="form-control" placeholder="輸入歌名" required/>
+						<div class="invalid-feedback">Please fill out this field.</div>
+						</div>
+						<div class="col">
+						<label for="author">歌手</label>
+						<input type="text" id="author" placeholder="輸入歌手"/>
+						</div>
+					</div>
+					<div class="row">
+						<label for="melody">旋律</label>
+						<input type="text" id="melody" placeholder="彈奏旋律"/>
+					</div>
+			 	</div>
+			  	<div class="container" style="background-color:#f1f1f1"> 
+				    <input class="button" type="image" id="submit"  src="../img/submit-right-arrow.png" alt="Submit to Keep"/>
+			  	</div>
+			</form>
+		</div>
+		<div class="container">
+		<div class="col-sm-2"></div>
+		<div class="col-sm-8">
 			<img id="piano-img" class="img-fluid" src="../img/blank_piano_keyboard_layout.png" usemap="#image-map">
 			<map id="area-map" name="image-map">
 			    <area alt="C3" data-note="C3" coords="14,14,13,193,51,193,50,127,38,128,38,12" shape="poly">
@@ -68,41 +103,14 @@
 			    <area alt="B5" data-note="B5" coords="763,128,763,195,800,194,801,16,778,13,777,126" shape="poly">
 			</map>
 		</div>
-		<div class="col-sm-12">record history:
-			<span id = "noteDisplay"></span>
-			<button id="fillOutForm" class="btn btn-primary btn-sm">Fill the melody</button>
+		<div class="col-sm-2"></div>
 		</div>
 	</div>
 	
-	<!-- 表單內容 -->
-		<div class="container">
-			<form id="musicForm" action="#" class="form-popup was-validated">
-				<div class="container" style="background-color:#f1f1f1"> <!-- 使用者頭像(或者是專輯封面) -->
-					<img class="avatar" src="../img/ProfileImg.png" alt="User Profile">
-				</div>
-				
-				<div class="container"> <!-- Post旋律表單 -->
-				    <label for="title">歌名</label>
-					<input type="text" id="title" class="form-control" placeholder="輸入歌名" required/>
-					<div class="invalid-feedback">Please fill out this field.</div>
-					<label for="author">歌手</label>
-					<input type="text" id="author" placeholder="輸入歌手"/>
-					<label for="melody">旋律</label>
-					<input type="text" id="melody" placeholder="彈奏旋律"/>
-			 	</div>
-			  	<div class="container" style="background-color:#f1f1f1"> 
-				    <input class="button" type="image" id="submit"  src="../img/submit-right-arrow.png" alt="Submit to Keep"/>
-			  	</div>
-			</form>
-		</div>
+	
 	
 	<div class="row">
 		<div class="container">
-<<<<<<< HEAD
-			<h1>最後討論出的定案</h1>
-=======
-			<h1>最後討論出的定案</h1>
->>>>>>> newFeat
 			<h2>播放列表</h2>
 			<table class="table table-striped">
 			<thead class="thead-light">	
@@ -120,17 +128,6 @@
 			</table>
 		</div>
 	</div>
-	
-	
-	<div>
-		<!-- 開啟modal form的按鈕 -->
-		<img class="button" id="open_sesame" src="../img/sign-add-icon.png" alt="Create Melody">
-	</div>
-	<!-- The Modal 可以留著之後做使用者登入-->
-	<div id="modal_action" class="modal">
-	  <span onclick="document.getElementById('modal_action').style.display='none'"
-	class="close" title="Close Modal">&times;</span>
-
-	</div>		
+		
 </body>
 </html>

@@ -2,6 +2,8 @@
  * 處理網頁初始化載入音檔的部分
  */
 $(document).ready(function(){
+			//不得已使用全域變數
+			var recordedMelody = "";
   			//使用github資源工具
   			//imagemap比較難操縱，除了css效果不知道該怎麼加，在RWD上也需要在另外處理
   			$("#area-map").imageMapResize();
@@ -42,8 +44,10 @@ $(document).ready(function(){
   					console.log("translate : " + pitch , typeof pitch);
   					player.queueWaveTable(audioContext, audioContext.destination, _tone_0010_Chaos_sf2_file, 0, pitch, 1);
   					
-  					$("#noteDisplay").append(evt.target.dataset.note + " "); //在下方顯示現在彈到的音
-  					$("#melody").append(evt.target.dataset.note); //將使用者音符綁在form表單
+  					recordedMelody += evt.target.dataset.note + "-" //把每次按下的琴鍵音記到變數中
+  					console.log(recordedMelody);
+  					$("#melody").val(recordedMelody); //將使用者彈奏的旋律綁在form表單
+  					
   				},
   				mouseup: function(evt){
   					console.log(evt.target.dataset.note);
@@ -52,13 +56,7 @@ $(document).ready(function(){
   			
   			//綁住按鈕，按下則會把區塊內字串填到form的melody欄位中
   			$("#fillOutForm").click(function(){
-  				$("#melody").val("D2-F2");
-  				alert(get);
-  				
-  				$("<input>").attr({
-  					type: "text",
-  					id: "melody",
-  				}).appendTo("#musicForm");
+  				$("#melody").val();
   			});
   		});
   		
